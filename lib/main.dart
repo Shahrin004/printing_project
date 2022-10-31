@@ -1,11 +1,8 @@
-import 'dart:typed_data';
 
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart';
-import 'package:intl/intl.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -37,30 +34,70 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void testReceipt(NetworkPrinter printer) {
-    printer.text(
-        'Regular: aA bB cC dD eE fF gG hH iI jJ kK lL mM nN oO pP qQ rR sS tT uU vV wW xX yY zZ');
-    printer.text('Special 1: àÀ èÈ éÉ ûÛ üÜ çÇ ôÔ',
-        styles: PosStyles(codeTable: 'CP1252'));
-    printer.text('Special 2: blåbærgrød',
-        styles: PosStyles(codeTable: 'CP1252'));
 
-    printer.text('Bold text', styles: PosStyles(bold: true));
-    printer.text('Reverse text', styles: PosStyles(reverse: true));
-    printer.text('Underlined text',
-        styles: PosStyles(underline: true), linesAfter: 1);
-    printer.text('Align left', styles: PosStyles(align: PosAlign.left));
-    printer.text('Align center', styles: PosStyles(align: PosAlign.center));
-    printer.text('Align right',
-        styles: PosStyles(align: PosAlign.right), linesAfter: 1);
+  String y ="Katla Fish Big Size- 2000 gm";
+  String s ="Katla(Padma River) Fish Big Size- 2000 gm";
+  Future<void> testReceipt(NetworkPrinter printer) async {
+    /*Print image;
+    final ByteData data = await rootBundle.load('assets/rabbit_black.jpg');
+    final Uint8List bytes = data.buffer.asUint8List();
+     image = decodeImage(bytes);
+    printer.image(image);*/
 
-    printer.text('Text size 200%',
-        styles: PosStyles(
-          height: PosTextSize.size2,
-          width: PosTextSize.size2,
-        ));
 
-    printer.feed(2);
+
+    printer.row(
+        [
+          PosColumn(text: 'Products', width: 7, styles: const PosStyles(align: PosAlign.center, bold: true)),
+          PosColumn(text: 'Qty', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+          PosColumn(text: 'Amount', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        ]
+    );
+   // printer.hr();
+
+
+    printer.hr(ch: '-');
+    if( s.length<=25){
+      printer.row([
+        PosColumn(text:s, width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '52.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '2500.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }else{
+
+      printer.row([
+        PosColumn(text:s, width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
+      ]);
+      printer.row([
+        PosColumn(text:" ", width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '52.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '2500.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }
+    printer.hr(ch: '-');
+    if( y.length<=25){
+      printer.row([
+        PosColumn(text:y, width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '6.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '6550.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }else{
+
+      printer.row([
+        PosColumn(text:y, width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
+      ]);
+      printer.row([
+        PosColumn(text:" ", width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '6.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '6550.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }
+   printer.hr(ch: '-');
+    printer.feed(1);
     printer.cut();
   }
 
@@ -68,11 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
     /*Print image;
     final ByteData data = await rootBundle.load('assets/rabbit_black.jpg');
     final Uint8List bytes = data.buffer.asUint8List();
-    final Image image = decodeImage(bytes);
+     image = decodeImage(bytes);
     printer.image(image);*/
 
+
     printer.row([
-      PosColumn(text: 'Cherry POS', width: 12, styles: const PosStyles(align: PosAlign.center, bold: true, height: PosTextSize.size3, width: PosTextSize.size3)),
+      PosColumn(text: 'Cherry POS', width: 12, styles: const PosStyles(align: PosAlign.center, bold: true, height: PosTextSize.size2, width: PosTextSize.size3)),
     ]);
 
     printer.row([
@@ -94,75 +132,86 @@ class _MyHomePageState extends State<MyHomePage> {
     ]);
 
     printer.row([
-      PosColumn(text: 'Served By: Mamun', width: 12, styles: const PosStyles(align: PosAlign.center, bold: true)),
+      PosColumn(text: 'Served By: Monjurur', width: 12, styles: const PosStyles(align: PosAlign.center, bold: true)),
     ]);
     printer.row([
       PosColumn(text: '', width: 12, styles: const PosStyles(align: PosAlign.center)),
     ]);
     printer.row([
-      PosColumn(text: 'Date: ', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+      PosColumn(text: 'Date: ', width: 2, styles: const PosStyles(align: PosAlign.left, bold: true)),
       PosColumn(text: '05/11/2022', width: 3, styles: const PosStyles(align: PosAlign.left)),
       PosColumn(text: '', width: 3, styles: const PosStyles(align: PosAlign.center, bold: true)),
       PosColumn(text: 'Time: ', width: 2, styles: const PosStyles(align: PosAlign.left, bold: true)),
-      PosColumn(text: '12:05', width: 2, styles: const PosStyles(align: PosAlign.left)),
+      PosColumn(text: '12:50', width: 2, styles: const PosStyles(align: PosAlign.left)),
 
     ]);
-    printer.row([
+   /* printer.row([
       PosColumn(text: '', width: 12, styles: const PosStyles(align: PosAlign.center)),
-    ]);
+    ]);*/
     printer.row([
       PosColumn(text: 'Invoice No: POS#2324654654', width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
     ]);
 
-    printer.row([
-      PosColumn(text: '', width: 12, styles: const PosStyles(align: PosAlign.center)),
-    ]);
+    // printer.row([
+    //   PosColumn(text: '', width: 12, styles: const PosStyles(align: PosAlign.center)),
+    // ]);
 
     printer.hr(ch: '=');
 
     printer.row(
       [
-        PosColumn(text: 'Products', width: 4, styles: const PosStyles(align: PosAlign.center, bold: true)),
+        PosColumn(text: 'Products', width: 7, styles: const PosStyles(align: PosAlign.center, bold: true)),
         PosColumn(text: 'Qty', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
-        PosColumn(text: 'Rate', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
         PosColumn(text: 'Amount', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
       ]
     );
-    //printer.hr(ch: '=');
-
     printer.hr();
 
     printer.row([
-      PosColumn(text: 'Katla Fish Big Size - 2000 g', width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
-    ]);
-    //printer.hr(ch: '-');
-    printer.row([
-      PosColumn(text: '', width: 4, styles: const PosStyles(align: PosAlign.center, bold: true)),
+      PosColumn(text:'Katla Fish Big Size- 2000 g', width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
       PosColumn(text: '1.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
       PosColumn(text: '300.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
-      PosColumn(text: '300.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+    ]);
+    printer.hr(ch: '-');
+    //printer.hr(ch: '-');
+    printer.row([
+      PosColumn(text: 'Fried Chicken', width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+      PosColumn(text: '5.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+      PosColumn(text: '457.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+    ]);
+    printer.hr(ch: '-');
+    //printer.hr(ch: '-');
+    if( s.length<=25){
+      printer.row([
+        PosColumn(text:s, width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '52.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '2500.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }else{
+
+      printer.row([
+        PosColumn(text:s, width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
+      ]);
+      printer.row([
+        PosColumn(text:" ", width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+        PosColumn(text: '52.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+        PosColumn(text: '2500.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+
+      ]);
+    }
+    printer.hr(ch: '-');
+    //printer.hr(ch: '-');
+    printer.row([
+      PosColumn(text: 'MasalaBazzar- Shingara', width: 7, styles: const PosStyles(align: PosAlign.left, bold: true)),
+      PosColumn(text: '98.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+      PosColumn(text: '650.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
     ]);
     printer.hr(ch: '-');
     printer.row([
-      PosColumn(text: 'Fried Chicken', width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
-    ]);
-    //printer.hr(ch: '-');
-    printer.row([
-      PosColumn(text: '', width: 4, styles: const PosStyles(align: PosAlign.center, bold: true)),
-      PosColumn(text: '2.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
-      PosColumn(text: '250.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
-      PosColumn(text: '450.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
-    ]);
-    printer.hr(ch: '-');
-    printer.row([
-      PosColumn(text: 'MasalaBazzar- Parata', width: 12, styles: const PosStyles(align: PosAlign.left, bold: true)),
-    ]);
-    //printer.hr(ch: '-');
-    printer.row([
-      PosColumn(text: '', width: 4, styles: const PosStyles(align: PosAlign.center, bold: true)),
-      PosColumn(text: '3.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
-      PosColumn(text: '200.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
-      PosColumn(text: '600.00', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
+      PosColumn(text: 'Total Quantity', width: 7, styles: const PosStyles(align: PosAlign.center, bold: true)),
+      PosColumn(text: '23.00', width: 2, styles: const PosStyles(align: PosAlign.right, bold: true)),
+      PosColumn(text: '', width: 3, styles: const PosStyles(align: PosAlign.right, bold: true)),
     ]);
     printer.hr(ch: '-');
 
@@ -200,10 +249,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //printer.hr(ch: '-');
 
-    printer.row([
+/*    printer.row([
       PosColumn(text: 'In Words: ', width: 2, styles: const PosStyles(align: PosAlign.left, bold: true)),
       PosColumn(text: 'Nine Thousand Four Hundred Eight One and Seventy One Paisa Only', width: 10, styles: const PosStyles(align: PosAlign.left)),
-    ]);
+    ]);*/
     printer.hr(ch: '-');
     printer.row([
       PosColumn(text: 'Paid Amount:', width: 6, styles: const PosStyles(align: PosAlign.right)),
@@ -233,7 +282,7 @@ class _MyHomePageState extends State<MyHomePage> {
       PosColumn(text: 'Purchases of Defected Item must be Exchanged by 72 Hour with Invoice', width: 10, styles: const PosStyles(align: PosAlign.left)),
     ]);
     printer.row([
-      PosColumn(text: '(Condition Applicable)', width: 12, styles: const PosStyles(align: PosAlign.right)),
+      PosColumn(text: '(Condition Applicable)', width: 12, styles: const PosStyles(align: PosAlign.right,)),
     ]);
 
     /*printer.row([
