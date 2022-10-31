@@ -105,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
       PosColumn(text: '', width: 3, styles: const PosStyles(align: PosAlign.center, bold: true)),
       PosColumn(text: 'Time: ', width: 2, styles: const PosStyles(align: PosAlign.left, bold: true)),
       PosColumn(text: '12:05', width: 2, styles: const PosStyles(align: PosAlign.left)),
+
     ]);
     printer.row([
       PosColumn(text: '', width: 12, styles: const PosStyles(align: PosAlign.center)),
